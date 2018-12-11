@@ -17,14 +17,20 @@ connection.connect(function(err) {
 
 //display all items for sale on bamazon
 function readProducts() {
-    console.log("Bamazon products available...\n");
+    console.log("Bamazon products available for purchase: \n");
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
-      // Log all results of the SELECT statement
-      console.log(res);
-      connection.end();
+      //console.log(res);
+
+      for(var i=0; i<res.length; i++) {
+          console.log(" | " + res[i].item_id + " " + res[i].product_name + "............" + "$" + res[i].price + "\r\n");
+      }
+      console.log("-------------------------------------------------------")
     });
-  }
+    connection.end();
+
+  };
+
 //then prompt two messages -- ID of product to buy, how many units to buy
 //then check to see if there is enough product for the customer request
 //return error if not
