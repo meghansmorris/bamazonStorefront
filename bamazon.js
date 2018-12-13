@@ -52,10 +52,10 @@ function makeAPurchase() {
         .then(function(answer) {
             for (var i=0; i<res.length; i++) {
 
-                if(res[i].item_id==answer.choice) {
+                if(res[i].product_name == answer.choice) {
                     var chosenItem = res[i];
-                    inquirer
-                        .prompt({
+                    
+                    inquirer.prompt({
                             name: "unitsToBuy",
                             type: "input",
                             message: "How many units would you like to purchase?",
@@ -69,39 +69,37 @@ function makeAPurchase() {
                         })
                         .then(function(answer) {
                             //then check to see if there is enough product for the customer request
-                            if (chosenItem.stock_quantity < parseFloat(answer.unitsToBuy)) {
-                                var query = connection.query (
-                                    "UPDATE products SET ? WHERE ?",
-                                    [
-                                        {
-                                            quantity: (parseFloat(chosenItem.stock_quantity - answer.unitsToBuy))
-                                        },
-                                        {
-                                            product_name: chosenItem
-                                        }
-                                    ],
-                                    function (err, res) {
-                                        if (err) throw err;
-                                        console.log(res.affectedRows + "has been updated!\n");
-                                        makeAPurchase();
-                                    } 
-                                );
-                                console.log(query.sql);
+                            // if (chosenItem.stock_quantity < parseFloat(answer.unitsToBuy)) {
+                            //     var query = connection.query (
+                            //         "UPDATE products SET ? WHERE ?",
+                            //         [
+                            //             {
+                            //                 quantity: (parseFloat(chosenItem.stock_quantity - answer.unitsToBuy))
+                            //             },
+                            //             {
+                            //                 product_name: chosenItem
+                            //             }
+                            //         ],
+                            //         function (err, res) {
+                            //             if (err) throw err;
+                            //             console.log(res.affectedRows + "has been updated!\n");
+                            //             makeAPurchase();
+                            //         } 
+                            //     );
+                            //     console.log(query.sql);
 
-                                //return error if not enough product
-                            } else {
-                                console.log(`There aren't enough ${chosenItem} available for purchase`);
-                                makeAPurchase();
-                                }
+                            //     //return error if not enough product
+                            // } else {
+                            //     console.log(`There aren't enough ${chosenItem} available for purchase`);
+                            //     makeAPurchase();
+                            //     }
 
                             });
                         
                     };
-                };
-        
-
+                
+                }
         // connection.end();    
-    
             });
 });
 
