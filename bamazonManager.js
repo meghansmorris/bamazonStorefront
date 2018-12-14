@@ -26,7 +26,42 @@ function readProducts() {
           console.log(" | " + res[i].item_id + " " + res[i].product_name + "............" + "$" + res[i].price + "   Units Available: " + res[i].stock_quantity + "\r\n");
       };
       console.log("-------------------------------------------------------");
-      //run a function here
+      
+      menuOptions();
     });
     
   };
+
+function menuOptions () {
+    inquirer
+    .prompt({
+      name: "action",
+      type: "list",
+      message: "What would you like to do?",
+      choices: [
+        "View Products for Sale",
+        "View Low Inventory",
+        "Add to Inventory",
+        "Add a New Product"
+      ]
+    })
+    .then(function(answer) {
+      switch (answer.action) {
+        case "View Products for Sale":
+            //function;
+            break;
+
+        case "View Low Inventory":
+            //function;
+            break;
+
+        case "Add to Inventory":
+            //function;
+            break;
+
+        case "Add a New Product":
+            //function;
+            break;
+      }
+    });
+}
