@@ -48,20 +48,65 @@ function menuOptions () {
     .then(function(answer) {
       switch (answer.action) {
         case "View Products for Sale":
-            //function;
+            readProducts();
             break;
 
         case "View Low Inventory":
-            //function;
+            //lowInventory();
             break;
 
         case "Add to Inventory":
-            //function;
+            //addInventory();
             break;
 
         case "Add a New Product":
-            //function;
+            newProduct();
             break;
       }
     });
+};
+
+//show items with an inventory less than 5
+function lowInventory () {
+
+}
+
+//display a prompt to add more of any item currently for sale
+function addInventory () {
+
+}
+
+//allow a completely new product to be added to the store
+function newProduct () {
+    inquirer.prompt([{
+        name: "item",
+        type: "input",
+        message: "What is the name of the new product for sale?"
+    },{
+        name: "department",
+        type: "input",
+        message: "What department does the new product belong in?"
+    },{
+        name: "price",
+        type: "input",
+        message: "What is the price of the new product?",
+        validate: function(value) {
+            if(isNaN(value)==false){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    },{
+        name: "quantity",
+        type: "input",
+        message: "What is the starting quantity of the new product?",
+        validate: function(value) {
+            if(isNaN(value)==false){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }]).then(function(answer))
 }
