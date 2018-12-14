@@ -56,7 +56,7 @@ function menuOptions () {
             break;
 
         case "Add to Inventory":
-            //addInventory();
+            addInventory();
             break;
 
         case "Add a New Product":
@@ -73,8 +73,65 @@ function lowInventory () {
 
 //display a prompt to add more of any item currently for sale
 function addInventory () {
+    connection.query("SELECT * FROM products", function(err, res) {      
+    inquirer.prompt(
+            {
+            name: "choice",
+            type: "rawlist",
+            choices: function(value) {
+                var choiceArray = [];
+                for (var i=0; i<res.length; i++) {
+                    choiceArray.push(res[i].product_name);
+                }
+                return choiceArray;
+            },
+            message: "\nWhich product would you like to add inventory to?\n", 
+    })
+    .then(function(answer) {
+        for (var i=0; i<res.length; i++) {
 
-}
+            if(res[i].product_name == answer.choice) {
+                var chosenItem = res[i];
+                
+                inquirer.prompt({
+                        name: "unitsToAdd",
+                        type: "input",
+                        message: "How many units would you like to add?",
+                        validate: function(value) {
+                            if(isNaN(value)==false){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    })
+                    .then(function(answer) {
+                        
+                        var query = connection.query (
+                        "UPDATE products SET ? WHERE ?",
+                            [
+                                {
+                                    stock_quantity: (parseFloat(chosenItem.stock_quantity + answer.unitsToBuy))
+                                },
+                                {
+                                    product_name: chosenItem.product_name
+                                }
+                            ],
+                            function (err) {
+                                if (err) throw err;
+                                console.log(`\n\rThe ${chosenItem.product_name} stock quantity has been updated!\n`);
+                                menuOptions();
+                            } 
+                        );
+                    })
+                }
+            }
+        })
+
+    })
+
+};
+
 
 //allow a completely new product to be added to the store
 function newProduct () {
@@ -119,4 +176,4 @@ function newProduct () {
             menuOptions();
         })
     })
-}
+};

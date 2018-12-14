@@ -84,7 +84,7 @@ function makeAPurchase() {
                                     function (err) {
                                         //console.log("line 85", chosenItem);
                                         if (err) throw err;
-                                        console.log(`\n\rThe ${chosenItem.product_name} stock quantity been updated!\n`);
+                                        console.log(`\n\rThe ${chosenItem.product_name} stock quantity has been updated!\n`);
                                         console.log("Your total purchase amount is $" + (answer.unitsToBuy * chosenItem.price) + ".\n\r\n\r");
                                         readProducts();
                                     } 
