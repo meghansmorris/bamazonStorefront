@@ -84,11 +84,12 @@ function makeAPurchase() {
                                     function (err) {
                                         //console.log("line 85", chosenItem);
                                         if (err) throw err;
-                                        console.log(`${chosenItem.product_name} has been updated!\n`);
+                                        console.log(`\n\rThe ${chosenItem.product_name} stock quantity been updated!\n`);
+                                        console.log("Your total purchase amount is $" + (answer.unitsToBuy * chosenItem.price) + ".\n\r\n\r");
                                         readProducts();
                                     } 
                                 );
-                                console.log("console at 91", query.sql);
+                                //console.log("console at 91", query.sql);
 
                                 //return error if not enough product
                             } else {
