@@ -85,7 +85,7 @@ function addInventory () {
                 }
                 return choiceArray;
             },
-            message: "\nWhich product would you like to add inventory to?\n", 
+            message: "\nWhich product would you like to add inventory to?\n" 
     })
     .then(function(answer) {
         for (var i=0; i<res.length; i++) {
@@ -106,12 +106,11 @@ function addInventory () {
                         }
                     })
                     .then(function(answer) {
-                        
                         var query = connection.query (
                         "UPDATE products SET ? WHERE ?",
                             [
                                 {
-                                    stock_quantity: (parseFloat(chosenItem.stock_quantity + answer.unitsToBuy))
+                                    stock_quantity: (chosenItem.stock_quantity + answer.unitsToAdd)
                                 },
                                 {
                                     product_name: chosenItem.product_name
