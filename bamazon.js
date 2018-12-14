@@ -23,7 +23,7 @@ function readProducts() {
       console.log("Bamazon products available for purchase:\n");
 
       for(var i=0; i<res.length; i++) {
-          console.log(" | " + res[i].item_id + " " + res[i].product_name + "............" + "$" + res[i].price + "\r\n");
+          console.log(" | " + res[i].item_id + " " + res[i].product_name + "............" + "$" + res[i].price + "   Units Available: " + res[i].stock_quantity + "\r\n");
       };
       console.log("-------------------------------------------------------");
       makeAPurchase();
@@ -69,31 +69,32 @@ function makeAPurchase() {
                         })
                         .then(function(answer) {
                             //then check to see if there is enough product for the customer request
-                            // if (chosenItem.stock_quantity < parseFloat(answer.unitsToBuy)) {
-                            //     var query = connection.query (
-                            //         "UPDATE products SET ? WHERE ?",
-                            //         [
-                            //             {
-                            //                 quantity: (parseFloat(chosenItem.stock_quantity - answer.unitsToBuy))
-                            //             },
-                            //             {
-                            //                 product_name: chosenItem
-                            //             }
-                            //         ],
-                            //         function (err, res) {
-                            //             if (err) throw err;
-                            //             console.log(res.affectedRows + "has been updated!\n");
-                            //             makeAPurchase();
-                            //         } 
-                            //     );
-                            //     console.log(query.sql);
+                            //console.log("console on line 72", chosenItem);
+                            if (chosenItem.stock_quantity >= answer.unitsToBuy) {
+                                var query = connection.query (
+                                    "UPDATE products SET ? WHERE ?",
+                                    [
+                                        {
+                                            stock_quantity: (parseFloat(chosenItem.stock_quantity - answer.unitsToBuy))
+                                        },
+                                        {
+                                            product_name: chosenItem.product_name
+                                        }
+                                    ],
+                                    function (err) {
+                                        //console.log("line 85", chosenItem);
+                                        if (err) throw err;
+                                        console.log(`${chosenItem.product_name} has been updated!\n`);
+                                        readProducts();
+                                    } 
+                                );
+                                console.log("console at 91", query.sql);
 
-                            //     //return error if not enough product
-                            // } else {
-                            //     console.log(`There aren't enough ${chosenItem} available for purchase`);
-                            //     makeAPurchase();
-                            //     }
-
+                                //return error if not enough product
+                            } else {
+                                console.log(`There aren't enough ${chosenItem.product_name} available for purchase\n`);
+                                readProducts();
+                                }
                             });
                         
                     };
@@ -104,3 +105,5 @@ function makeAPurchase() {
 });
 
 };
+
+//need to store the updated quantity and share the total purchase amount with the customer

@@ -19,6 +19,7 @@
   "homepage": "https://github.com/meghansmorris/bamazonStorefront#readme",
   "dependencies": {
     "inquirer": "^6.2.1",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "npm": "^6.5.0"
   }
 }
