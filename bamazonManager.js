@@ -108,5 +108,15 @@ function newProduct () {
                 return false;
             }
         }
-    }]).then(function(answer))
+    }]).then(function(answer){
+        connection.query("INSERT INTO products SET ?", {
+            item: answer.product_name,
+            department: answer.department_name,
+            price: answer.price,
+            quantity: answer.stock_quantity
+        }, function(err,res) {
+            console.log(`You have successfully added ${answer.product_name} to bamazon!`);
+            menuOptions();
+        })
+    })
 }
