@@ -52,7 +52,7 @@ function menuOptions () {
             break;
 
         case "View Low Inventory":
-            //lowInventory();
+            lowInventory();
             break;
 
         case "Add to Inventory":
@@ -68,7 +68,16 @@ function menuOptions () {
 
 //show items with an inventory less than 5
 function lowInventory () {
+    var query = "SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity<=5";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        //console.log(res);
 
+        for (var i=0; i<res.length; i++) {
+            console.log("\n | " + res[i].item_id + " " + res[i].product_name + "      Units Available: " + res[i].stock_quantity + "\r\n");
+        }
+        menuOptions();
+    })
 }
 
 //display a prompt to add more of any item currently for sale
@@ -89,7 +98,6 @@ function addInventory () {
     })
     .then(function(answer) {
         for (var i=0; i<res.length; i++) {
-
             if(res[i].product_name == answer.choice) {
                 var chosenItem = res[i];
                 
@@ -110,14 +118,19 @@ function addInventory () {
                         "UPDATE products SET ? WHERE ?",
                             [
                                 {
-                                    stock_quantity: (chosenItem.stock_quantity + answer.unitsToAdd)
+                                    stock_quantity: (chosenItem.stock_quantity + parseInt(answer.unitsToAdd))
                                 },
                                 {
                                     product_name: chosenItem.product_name
                                 }
                             ],
+
                             function (err) {
                                 if (err) throw err;
+                                // console.log("chosenitem-stock", chosenItem.stock_quantity)
+                                // console.log("answer-units", answer.unitsToAdd)
+                                // console.log("type chosenitem-stock", typeof chosenItem.stock_quantity)
+                                // console.log("type answer-units", typeof answer.unitsToAdd)
                                 console.log(`\n\rThe ${chosenItem.product_name} stock quantity has been updated!\n`);
                                 menuOptions();
                             } 
