@@ -79,11 +79,11 @@ function addInventory () {
 //allow a completely new product to be added to the store
 function newProduct () {
     inquirer.prompt([{
-        name: "item",
+        name: "product_name",
         type: "input",
         message: "What is the name of the new product for sale?"
     },{
-        name: "department",
+        name: "department_name",
         type: "input",
         message: "What department does the new product belong in?"
     },{
@@ -98,7 +98,7 @@ function newProduct () {
             }
         }
     },{
-        name: "quantity",
+        name: "stock_quantity",
         type: "input",
         message: "What is the starting quantity of the new product?",
         validate: function(value) {
@@ -110,12 +110,12 @@ function newProduct () {
         }
     }]).then(function(answer){
         connection.query("INSERT INTO products SET ?", {
-            item: answer.product_name,
-            department: answer.department_name,
+            product_name: answer.product_name,
+            department_name: answer.department_name,
             price: answer.price,
-            quantity: answer.stock_quantity
+            stock_quantity: answer.stock_quantity
         }, function(err,res) {
-            console.log(`You have successfully added ${answer.product_name} to bamazon!`);
+            console.log(`\nYou have successfully added a product to bamazon!\n`);
             menuOptions();
         })
     })
